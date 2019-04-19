@@ -22,25 +22,20 @@ public class MD5Utils {
         try {
             // 创建消息摘要实例对象
             MessageDigest digest = MessageDigest.getInstance("md5");
-
-            // 调用摘要算法，生成摘要结果，存放在byte数组里面
             byte[] bs = digest.digest(input.getBytes("utf-8"));
 
-            // byte存放的值范围为-128-127，先转换为正数128-255、0-127：
             StringBuffer sb = new StringBuffer();
             for (byte b : bs) {
+                // 这里为何要 &xff 可以看我的博客 https://wangjunnan.github.io/2019/01/13/%E6%97%A0%E5%8F%82read%E8%BF%94%E5%9B%9Eint%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BD%95%E8%A6%81%E4%B8%8E%E4%B8%8A0xff/
                 int temp = b & 0xff;
-                if (temp < 16 && temp >= 0) {
-                    // 手动补上一个“0”
-                    sb.append("0" + Integer.toHexString(temp));
-                } else {
-                    sb.append(Integer.toHexString(temp));
+                if (temp < 16) {
+                    // 手动补上一个0
+                    sb.append("0");
                 }
+                sb.append(Integer.toHexString(temp));
             }
             return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return "";
