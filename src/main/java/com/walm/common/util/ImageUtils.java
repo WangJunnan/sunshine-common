@@ -1,8 +1,11 @@
-package com.sunshine.common.util;
+package com.walm.common.util;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * ImageUtils
@@ -11,6 +14,54 @@ import java.io.IOException;
  * @date 2019/4/19
  */
 public class ImageUtils {
+
+    /**
+     * 图片url转成byte[]
+     *
+     * @param imageUrl
+     * @return
+     * @throws IOException
+     */
+    public static byte[] imageUrl2bytes(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            BufferedImage image = ImageIO.read(url);
+
+            return bufferedImage2bytes(image);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /**
+     * BufferedImage转换Byte[]
+     *
+     * @param bufferedImage
+     * @return
+     * @throws IOException
+     */
+    public static byte[] bufferedImage2bytes(BufferedImage bufferedImage) {
+        return bufferedImage2bytes(bufferedImage, "png");
+    }
+
+    /**
+     * BufferedImage转换Byte[]
+     *
+     * @param bufferedImage
+     * @param formatName
+     * @return
+     */
+    public static byte[] bufferedImage2bytes(BufferedImage bufferedImage, String formatName) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, formatName, out);
+            out.flush();
+
+            return out.toByteArray();
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     /**
      * 打水印

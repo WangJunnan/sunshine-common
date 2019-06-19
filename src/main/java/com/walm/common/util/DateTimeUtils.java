@@ -1,4 +1,4 @@
-package com.sunshine.common.util;
+package com.walm.common.util;
 
 import java.sql.Timestamp;
 import java.time.Instant;

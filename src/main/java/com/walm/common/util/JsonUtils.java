@@ -1,4 +1,4 @@
-package com.sunshine.common.util;
+package com.walm.common.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
