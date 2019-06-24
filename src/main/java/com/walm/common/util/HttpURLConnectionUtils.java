@@ -160,7 +160,7 @@ public class HttpURLConnectionUtils {
      * @param params 请求参数
      * @return
      */
-    private static String getCompleteUrl(String url, Map<String, Object> params) {
+    public static String getCompleteUrl(String url, Map<String, Object> params) {
         if (params == null) {
             return url;
         }
