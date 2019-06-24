@@ -28,7 +28,7 @@ public class OKHttpUtils {
 
         client = new OkHttpClient().newBuilder()
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                .writeTimeout(10000, TimeUnit.MILLISECONDS)
                 .readTimeout(10000, TimeUnit.MILLISECONDS)
                 //.addInterceptor()
                 //.cookieJar() 实现cookie，OkHttp 默认不支持cookie
