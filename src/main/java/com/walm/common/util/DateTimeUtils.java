@@ -1,10 +1,7 @@
 package com.walm.common.util;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
@@ -28,6 +25,8 @@ public final class DateTimeUtils {
      */
     public static final ZoneId DEFAULT_ZONE_ID = ZoneId.of("Asia/Shanghai");
 
+
+    //********************************** To Time String ************************************//
 
     /**
      * get now time str
@@ -65,6 +64,49 @@ public final class DateTimeUtils {
     }
 
     /**
+     * date to str by pattern
+     *
+     * @param date
+     * @param pattern
+     * @return
+     */
+    public static String dateToStr(Date date, String pattern) {
+        if (Objects.isNull(date)) {
+            return null;
+        }
+        LocalDateTime localDateTime = dateToLocalDateTime(date);
+        return toStrByPattern(localDateTime, pattern);
+    }
+
+    //********************************** To LocalDateTime ************************************//
+
+    /**
+     * date to LocalDateTime
+     *
+     * @param date
+     * @return
+     */
+    public static LocalDateTime dateToLocalDateTime(Date date) {
+        return dateToLocalDateTime(date, DEFAULT_ZONE_ID);
+    }
+
+    /**
+     * date to LocalDateTime by zoneId
+     *
+     * @param date
+     * @param zoneId
+     * @return
+     */
+    public static LocalDateTime dateToLocalDateTime(Date date, ZoneId zoneId) {
+        if (Objects.isNull(date)) {
+            return null;
+        }
+        Instant instant = date.toInstant();
+        LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+        return localDateTime;
+    }
+
+    /**
      *  dateTimeStr to LocalDateTime by pattern
      *
      * @param dateTimeStr
@@ -80,6 +122,21 @@ public final class DateTimeUtils {
     }
 
     /**
+     * timestamp to localDateTime
+     *
+     * @param timestamp
+     * @return
+     */
+    public static LocalDateTime getDateTimeByTimestamp(Timestamp timestamp) {
+        if (Objects.isNull(timestamp)) {
+            return null;
+        }
+        return timestamp.toLocalDateTime();
+    }
+
+    //********************************** To Date ************************************//
+
+    /**
      * dateTimeStr to Date by pattern
      *
      * @param dateTimeStr
@@ -87,42 +144,48 @@ public final class DateTimeUtils {
      * @return
      */
     public static Date getDateByStr(String dateTimeStr, String pattern) {
+        return getDateByStr(dateTimeStr, pattern, DEFAULT_ZONE_ID);
+    }
+
+    /**
+     * dateTimeStr to Date by pattern and zoneId
+     *
+     * @param dateTimeStr
+     * @param pattern
+     * @param zoneId
+     * @return
+     */
+    public static Date getDateByStr(String dateTimeStr, String pattern, ZoneId zoneId) {
         if (StringUtils.isEmpty(dateTimeStr)) {
             return null;
         }
         LocalDateTime dateTime = getDateTimeByStr(dateTimeStr, pattern);
 
-        ZonedDateTime zdt = dateTime.atZone(DEFAULT_ZONE_ID);
+        ZonedDateTime zdt = dateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());
     }
 
     /**
-     * date to LocalDateTime
+     * timestamp to date
      *
-     * @param date
+     * @param timestamp
      * @return
      */
-    public static LocalDateTime dateToLocalDateTime(Date date) {
-        if (Objects.isNull(date)) {
+    public static Date getDateByTimestamp(Timestamp timestamp) {
+        if (Objects.isNull(timestamp)) {
             return null;
         }
-        Instant instant = date.toInstant();
-        LocalDateTime localDateTime = instant.atZone(DEFAULT_ZONE_ID).toLocalDateTime();
-        return localDateTime;
+        return Date.from(timestamp.toInstant());
     }
 
+    //********************************** To Timestamp ************************************//
+
     /**
-     * date to str by pattern
+     * get now timestamp
      *
-     * @param date
-     * @param pattern
      * @return
      */
-    public static String dateToStr(Date date, String pattern) {
-        if (Objects.isNull(date)) {
-            return null;
-        }
-        LocalDateTime localDateTime = dateToLocalDateTime(date);
-        return toStrByPattern(localDateTime, pattern);
+    public static Timestamp nowTimestamp() {
+        return Timestamp.from(Instant.now());
     }
 }
