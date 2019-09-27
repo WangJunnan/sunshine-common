@@ -3,7 +3,6 @@ package com.walm.common.util;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Data;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 /**
@@ -19,6 +18,8 @@ public class JsonUtils {
             .serializeNulls()
             // 设置字段命名转换规则 --- 驼峰 eg: user_name -> userName userName -> user_name
             //.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            // 日期格式序列化规则 eg: 2019-09-23 12:00:00
+            .setDateFormat("YYYY-MM-dd HH:mm:ss")
             // 设置字段序列化/反序列化过滤规则
             .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC)
             .create();
@@ -57,18 +58,5 @@ public class JsonUtils {
      */
     public static <T> T fromJson(String json, Type type) {
         return gson.fromJson(json, type);
-    }
-
-    public static void main(String[] args) {
-        String s = "{\"user_name\":\"wangjunnan\",\"age_ad\":\"ds\"}";
-        A a = fromJson(s, A.class);
-        System.out.println(a);
-        System.out.println(toJson(a));
-    }
-
-    @Data
-    public static class A {
-        private String userName;
-        private String ageAd;
     }
 }
